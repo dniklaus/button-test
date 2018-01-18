@@ -23,6 +23,7 @@
 #include <AppDebug.h>
 #include <ProductDebug.h>
 #include <RamUtils.h>
+#include <Button.h>
 
 #ifndef BUILTIN_LED
 #define BUILTIN_LED 13
@@ -36,6 +37,8 @@ void setup()
   digitalWrite(BUILTIN_LED, 0);
 
   setupProdDebugEnv();
+
+  new Button();
 }
 
 void loop()
