@@ -8,10 +8,17 @@ dependencies:
 
         # pre-install PlatformIO development platforms, they will be cached
         - platformio platform install atmelavr atmelsam espressif8266
+# jobs:
+  # build:
+    # docker:
+      # - image: circleci/python:3.6.2-stretch-browsers
+    # steps:
+      # - checkout
+      # - run: pip install -r requirements/dev.txt
 jobs:
-  build:
-    docker:
-      - image: circleci/python:3.6.2-stretch-browsers
-    steps:
-      - checkout
-      - run: pip install -r requirements/dev.txt
+   build:
+     docker:
+       - image: circleci/python:3.6.2-stretch-browsers
+     steps:
+       - checkout
+       - run: echo "hello world"      
