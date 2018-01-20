@@ -5,6 +5,10 @@ dependencies:
 
     pre:
         - sudo pip install -U platformio
+        - sudo pip uninstall setuptools
+        - sudo pip install setuptools
+        - sudo pip uninstall platformio
+        - sudo pip isntall platformio
 
         # pre-install PlatformIO development platforms, they will be cached
         - platformio platform install atmelavr atmelsam espressif8266
