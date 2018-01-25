@@ -56,7 +56,9 @@ void setup()
 
   setupProdDebugEnv();
 
-  new Button(new ArduinoDigitalInPinSupervisor(12), new ButtonEdgeDetector());
+  Button* button = new Button(new ArduinoDigitalInPinSupervisor(12), new ButtonEdgeDetector());
+//  button->addDetector(new ButtonEdgeDetector());
+
 }
 
 void loop()
