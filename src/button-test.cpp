@@ -23,13 +23,31 @@
 #include <AppDebug.h>
 #include <ProductDebug.h>
 #include <RamUtils.h>
+#include <ArduinoDigitalInPinSupervisor.h>
 #include <Button.h>
+#include <DetectorStrategy.h>
 
 #ifndef BUILTIN_LED
 #define BUILTIN_LED 13
 #endif
 
 SerialCommand* sCmd = 0;
+
+class ButtonEdgeDetector : public EdgeDetector
+{
+private:
+  DbgTrace_Port* m_trPort;
+
+public:
+  ButtonEdgeDetector()
+  : m_trPort(new DbgTrace_Port("btn", DbgTrace_Level::debug))
+  { }
+
+  void onEdge(bool newState)
+  {
+    TR_PRINTF(m_trPort, DbgTrace_Level::debug, "Button %s", newState ? "pressed" : "released");
+  }
+};
 
 void setup()
 {
@@ -38,7 +56,7 @@ void setup()
 
   setupProdDebugEnv();
 
-  new Button();
+  new Button(new ArduinoDigitalInPinSupervisor(12), new ButtonEdgeDetector());
 }
 
 void loop()
