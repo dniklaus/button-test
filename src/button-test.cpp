@@ -37,14 +37,21 @@ class ButtonEdgeDetector : public EdgeDetector
 {
 private:
   DbgTrace_Port* m_trPort;
+  unsigned long int m_count;
 
 public:
   ButtonEdgeDetector()
-  : m_trPort(new DbgTrace_Port("btn", DbgTrace_Level::debug))
+  : m_trPort(new DbgTrace_Port("btn", DbgTrace_Level::info))
+  , m_count(0)
   { }
 
   void onEdge(bool newState)
   {
+    if (newState)
+    {
+      m_count++;
+      TR_PRINTF(m_trPort, DbgTrace_Level::info, "Count: %d", m_count);
+    }
     TR_PRINTF(m_trPort, DbgTrace_Level::debug, "Button %s", newState ? "pressed" : "released");
   }
 };
