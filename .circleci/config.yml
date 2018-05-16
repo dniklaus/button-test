@@ -5,6 +5,11 @@ dependencies:
 
         # pre-install PlatformIO development platforms, they will be cached
         - platformio platform install atmelavr atmelsam espressif8266
-test:
-    override:
-        - platformio ci src/button-test.cpp
+
+jobs:
+   build:
+     docker:
+       - image: circleci/python:3.6.2-stretch-browsers
+     steps:
+       - checkout
+       - platformio ci --project-conf platformio.ini src --lib lib/prod-dbg
