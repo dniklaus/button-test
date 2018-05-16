@@ -1,21 +1,10 @@
 version: 2
 dependencies:
-    cache_directories:
-        - "~/.platformio"
-
     pre:
         - sudo pip install -U platformio
-        - sudo pip uninstall setuptools
-        - sudo pip install setuptools
-        - sudo pip uninstall platformio
-        - sudo pip isntall platformio
 
         # pre-install PlatformIO development platforms, they will be cached
         - platformio platform install atmelavr atmelsam espressif8266
-jobs:
-   build:
-     docker:
-       - image: circleci/python:3.6.2-stretch-browsers
-     steps:
-       - checkout
-       - run: platformio ci --project-conf platformio.ini src --lib lib/prod-dbg
+test:
+    override:
+        - platformio ci src/button-test.cpp
