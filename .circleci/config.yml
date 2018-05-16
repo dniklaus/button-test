@@ -15,7 +15,6 @@ dependencies:
 jobs:
    checkout:
      post:
-       ****
        - pip install -U platformio
        - pip isntall platformio
        - platformio platform install atmelavr atmelsam espressif8266
