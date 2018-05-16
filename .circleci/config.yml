@@ -12,4 +12,4 @@ jobs:
        - image: circleci/python:3.6.2-stretch-browsers
      steps:
        - checkout
-       - platformio ci --project-conf platformio.ini src --lib lib/prod-dbg
+       - run: platformio ci --project-conf platformio.ini src --lib lib/prod-dbg
