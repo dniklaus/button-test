@@ -5,11 +5,10 @@
  *      Author: niklausd
  */
 
-#include <Arduino.h>
 
-// PlatformIO libraries
-#include <SerialCommand.h>  // pio lib install 173, lib details see https://github.com/kroimon/Arduino-SerialCommand
+#define WIRINGTIMER_SUPPRESS_WARNINGS
 #include <Timer.h>          // pio lib install 1699, lib details see https://github.com/dniklaus/wiring-timer
+#include <SerialCommand.h>  // pio lib install 173, lib details see https://github.com/kroimon/Arduino-SerialCommand
 
 // private libraries
 #include <DbgCliNode.h>
@@ -27,11 +26,13 @@
 #include <Button.h>
 #include <DetectorStrategy.h>
 
-#ifndef BUILTIN_LED
-#define BUILTIN_LED 13
-#endif
+#include <Arduino.h>
+
+#define BUTTON_PIN 11
 
 SerialCommand* sCmd = 0;
+
+//-----------------------------------------------------------------------------
 
 class ButtonEdgeDetector : public EdgeDetector
 {
@@ -53,19 +54,38 @@ public:
       TR_PRINTF(m_trPort, DbgTrace_Level::info, "Count: %d", m_count);
     }
     TR_PRINTF(m_trPort, DbgTrace_Level::debug, "Button %s", newState ? "pressed" : "released");
+    if (0 != button())
+    {
+      if (0 != button()->adapter())
+      {
+        button()->adapter()->notifyStatusChanged(newState);
+      }
+    }
   }
 };
 
+//-----------------------------------------------------------------------------
+
+class MyButtonAdapter : public ButtonAdapter
+{
+public:
+  void notifyStatusChanged(bool isActive)
+  {
+    Serial.print("Button ");
+    Serial.println(isActive ? "pressed" : "released");
+  }
+};
+
+//-----------------------------------------------------------------------------
+
 void setup()
 {
-  pinMode(BUILTIN_LED, OUTPUT);
-  digitalWrite(BUILTIN_LED, 0);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, 0);
 
   setupProdDebugEnv();
 
-  Button* button = new Button(new ArduinoDigitalInPinSupervisor(12), new ButtonEdgeDetector());
-//  button->addDetector(new ButtonEdgeDetector());
-
+  new Button(new ArduinoDigitalInPinSupervisor(BUTTON_PIN), new ButtonEdgeDetector(), new MyButtonAdapter());
 }
 
 void loop()
@@ -74,5 +94,5 @@ void loop()
   {
     sCmd->readSerial();     // process serial commands
   }
-  yield();                  // process Timers
+  scheduleTimers();         // process Timers
 }

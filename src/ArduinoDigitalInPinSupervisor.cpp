@@ -11,7 +11,7 @@
 #include <ArduinoDigitalInPinSupervisor.h>
 
 ArduinoDigitalInPinSupervisor::ArduinoDigitalInPinSupervisor(int arduinoPin)
-: PinSupervisor()
+: PinSupervisor(PinSupervisor::IS_NEG_LOGIC)
 , m_arduinoPin(arduinoPin)
 {
   if (0 <= m_arduinoPin)
