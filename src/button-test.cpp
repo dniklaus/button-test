@@ -24,6 +24,7 @@
 #include <RamUtils.h>
 #include <ArduinoDigitalInPinSupervisor.h>
 #include <Button.h>
+#include <EdgeDetector.h>
 #include <DetectorStrategy.h>
 
 #include <Arduino.h>
